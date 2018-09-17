@@ -39,7 +39,7 @@ describe.only('Auth API', () => {
 
     it('signin', () => {
         return request
-            .post('/api/auth/signing')
+            .post('/api/auth/signin')
             .send({
                 avatar: 'riveter',
                 username: 'mja23',
@@ -65,6 +65,22 @@ describe.only('Auth API', () => {
             .then(res => {
                 assert.equal(res.status, 400);
                 assert.equal(res.body.error, 'email in use');
+            });
+    });
+
+    it('gives 401 on non-existent email', () => {
+        return request
+            .post('/api/auth/signin')
+            .send({
+                avatar: 'riveter',
+                username: 'mja23',
+                email: 'bad@me.com',
+                password: 'abc123',
+                zip: 97306
             })
+            .then(res => {
+                assert.equal(res.status, 401);
+                assert.equal(res.body.error, 'Invalid email or password');
+            });
     });
 });
