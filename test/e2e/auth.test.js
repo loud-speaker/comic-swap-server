@@ -12,14 +12,20 @@ describe.only('Auth API', () => {
         return request
             .post('/api/auth/signup')
             .send({
+                avatar: 'riveter',
                 username: 'mja23',
                 email: 'me@me.com',
-                password: 'abc123'
+                password: 'abc123',
+                zip: 97306
             })
-            .then(({ body }) => token = body.token);
+            .then(({ body }) => {
+                console.log('***BODY***', body);
+                token = body.token;
+            });
     });
 
     it('signup', () => {
+        console.log('***TOKEN***', token);
         assert.ok(token);
     });
 });
