@@ -45,8 +45,9 @@ describe.only('User model', () => {
 
     it('validates required fields', () => {
         const user = new User({});
-        const errors = getErrors(user.validateSync(), 4);
+        const errors = getErrors(user.validateSync(), 5);
 
+        assert.equal(errors.avatar.kind, 'required');
         assert.equal(errors.username.kind, 'required');
         assert.equal(errors.email.kind, 'required');
         assert.equal(errors.password.kind, 'required');
