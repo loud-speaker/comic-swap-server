@@ -51,4 +51,20 @@ describe.only('Auth API', () => {
                 assert.ok(body.token);
             });
     });
+
+    it('Gives 400 on signup of same email', () => {
+        return request
+            .post('/api/auth/signup')
+            .send({
+                avatar: 'riveter',
+                username: 'mja23',
+                email: 'me@me.com',
+                password: 'abc123',
+                zip: 97306
+            })
+            .then(res => {
+                assert.equal(res.status, 400);
+                assert.equal(res.body.error, 'email in use');
+            })
+    });
 });
