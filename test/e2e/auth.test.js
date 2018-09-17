@@ -83,4 +83,20 @@ describe.only('Auth API', () => {
                 assert.equal(res.body.error, 'Invalid email or password');
             });
     });
+
+    it('gives 401 on bad password', () => {
+        return request
+            .post('/api/auth/signin')
+            .send({
+                avatar: 'riveter',
+                username: 'mja23',
+                email: 'bad@me.com',
+                password: 'abc123',
+                zip: 97306
+            })
+            .then(res => {
+                assert.equal(res.status, 401);
+                assert.equal(res.body.error, 'Invalid email or password');
+            });
+    });
 });
