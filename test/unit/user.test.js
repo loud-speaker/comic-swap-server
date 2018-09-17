@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const User = require('../../lib/models/user');
 const { getErrors } = require('./helpers');
+const { Types } = require('mongoose');
 
 describe.only('User model', () => {
 
@@ -33,7 +34,10 @@ describe.only('User model', () => {
             username: 'mja23',
             email: 'test@test.com',
             password: 'abc123',
-            zip: 97302
+            zip: 97302,
+            comics: [Types.ObjectId(), Types.ObjectId()],
+            tradeable: [Types.ObjectId()],
+            wishlist: [Types.ObjectId()]
         };
         const user = new User(data);
 
