@@ -19,13 +19,11 @@ describe.only('Auth API', () => {
                 zip: 97306
             })
             .then(({ body }) => {
-                console.log('***BODY***', body);
                 token = body.token;
             });
     });
 
     it('signup', () => {
-        console.log('***TOKEN***', token);
         assert.ok(token);
     });
 });
