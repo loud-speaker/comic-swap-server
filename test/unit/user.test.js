@@ -3,7 +3,7 @@ const User = require('../../lib/models/user');
 const { getErrors } = require('./helpers');
 const { Types } = require('mongoose');
 
-describe.only('User model', () => {
+describe('User model', () => {
 
     const data = {
         username: 'mja23',
