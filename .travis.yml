@@ -4,4 +4,4 @@ node_js:
 services:
   - mongodb
 env:
-  - MONGODB_URI=mongodb://localhost:27017/<YOUR-DB-NAME-HERE>
+  - MONGODB_URI=mongodb://localhost:27017/comic

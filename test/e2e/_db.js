@@ -2,7 +2,7 @@ require('dotenv').config({ path: './test/e2e/.env' });
 const connect = require('../../lib/utils/connect');
 const mongoose = require('mongoose');
 
-connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/<YOUR-DB-NAME-HERE>');
+connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/comic');
 after(() => {
     return mongoose.connection.close();
 });
