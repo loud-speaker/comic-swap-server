@@ -13,8 +13,8 @@ describe('getComicsList API call', () => {
     it('Returns comic list as processed data', () => {
         return getComicsList(2)
             .then(data => {
-                assert.deepEqual(data[0].id, 6);
-                assert.deepEqual(data[1].id, 7);
+                assert.deepEqual(data[0].comicId, 6);
+                assert.deepEqual(data[1].comicId, 7);
                 assert.deepEqual(data.length, 2);
             });
     });
@@ -22,9 +22,9 @@ describe('getComicsList API call', () => {
     it('Returns filtered comic list processed data', () => {
         return getComicsList(2, 'spiderman')
             .then(data => {
-                assert.deepEqual(data[0].id, 20596, 'Data[0].id');
+                assert.deepEqual(data[0].comicId, 20596, 'Data[0].comicId');
                 assert.deepEqual(data[0].name, 'Spiderman & Howard the Duck', 'Data[0].name');
-                assert.deepEqual(data[1].id, 20736, 'Data[1].id');
+                assert.deepEqual(data[1].comicId, 20736, 'Data[1].id');
                 assert.deepEqual(data[1].name, 'Spiderman & Black Widow', 'Data[1].name');
                 assert.deepEqual(data.length, 2, 'Array length');
             });
