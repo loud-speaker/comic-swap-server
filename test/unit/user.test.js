@@ -33,7 +33,7 @@ describe('User model', () => {
             avatar: 'wonder woman',
             username: 'mja23',
             email: 'test@test.com',
-            password: 'abc123',
+            hash: 'abc123',
             zip: 97302,
             comics: [Types.ObjectId(), Types.ObjectId()],
             tradeable: [Types.ObjectId()],
@@ -54,7 +54,7 @@ describe('User model', () => {
         assert.equal(errors.avatar.kind, 'required');
         assert.equal(errors.username.kind, 'required');
         assert.equal(errors.email.kind, 'required');
-        assert.equal(errors.password.kind, 'required');
+        assert.equal(errors.hash.kind, 'required');
         assert.equal(errors.zip.kind, 'required');
     });
 
