@@ -8,7 +8,7 @@ describe('getOneComicDetail API call', () => {
 
     beforeEach(() => {
         batmanEternal = {
-            id: 479928,
+            comicId: 479928,
             issueName: 'Batman... Eternal?',
             volumeName: 'Batman Eternal',
             coverDate: '2015-04-01'
@@ -16,14 +16,14 @@ describe('getOneComicDetail API call', () => {
     });
 
     it('Should get a comic by ID', () => {
-        return getOneComicDetail(batmanEternal.id)
+        return getOneComicDetail(batmanEternal.comicId)
             .then(data => {
                 assert.isDefined(data);
             });
     });
 
     it('Returns comic as processed data', () => {
-        return getOneComicDetail(batmanEternal.id)
+        return getOneComicDetail(batmanEternal.comicId)
             .then(data => {
                 console.log('DATA', data);
                 assert.deepEqual(data.issueName, batmanEternal.issueName);
