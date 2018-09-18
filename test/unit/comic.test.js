@@ -6,6 +6,7 @@ describe('Comic model', () => {
 
     it('validates good model', () => {
         const data = {
+            id: 123,
             issueName: 'The Joker Appears',
             volumeName: 'Batman',
             coverDate: '1982-10-31',
@@ -29,8 +30,9 @@ describe('Comic model', () => {
 
     it('validates required fields', () => {
         const comic = new Comic({});
-        const errors = getErrors(comic.validateSync(), 5);
+        const errors = getErrors(comic.validateSync(), 6);
 
+        assert.equal(errors.id.kind, 'required');
         assert.equal(errors.issueName.kind, 'required');
         assert.equal(errors.volumeName.kind, 'required');
         assert.equal(errors.coverDate.kind, 'required');
