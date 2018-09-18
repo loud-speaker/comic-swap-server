@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 const request = require('./request');
-const { dropCollection  } = require('./_db');
+const { dropCollection } = require('./_db');
 const { getOneComicDetail } = require('../../lib/services/comicsApi');
 
 describe.only('Catalog API', () => {
@@ -10,34 +10,31 @@ describe.only('Catalog API', () => {
     beforeEach(() => dropCollection('catalogs'));
 
     let token = null;
-    let mariah = {
+    let mariah;
+    let data = {
         avatar: 'riveter',
         username: 'mja23',
-        email: 'me@me.com',
+        email: 'test@test.com',
         password: 'abc123',
         zip: 97306
     };
-    let batmanEternal;
+    const batmanEternal = {
+        comicId: 479928,
+        issueName: 'Batman... Eternal?',
+        volumeName: 'Batman Eternal',
+        coverDate: '2015-04-01'
+    };
     let comic;
     let catalog;
 
     beforeEach(() => {
         return request
             .post('/api/auth/signup')
-            .send(mariah)
+            .send(data)
             .then(({ body }) => {
                 token = body.token;
-                assert.ok(token);
+                mariah = body;
             });
-    });
-
-    beforeEach(() => {
-        batmanEternal = {
-            comicId: 479928,
-            issueName: 'Batman... Eternal?',
-            volumeName: 'Batman Eternal',
-            coverDate: '2015-04-01'
-        };
     });
 
     beforeEach(() => {
@@ -53,9 +50,10 @@ describe.only('Catalog API', () => {
             });
     });
 
-    it('adds a comic to a catalog', () => {
+    beforeEach(() => {
         return request
-            .post('/api/catalog')
+            .post('/api/catalogs')
+            .set('Authorization', token)
             .send({
                 userId: mariah._id,
                 comicId: comic._id,
@@ -63,7 +61,10 @@ describe.only('Catalog API', () => {
             })
             .then(({ body }) => {
                 catalog = body;
-                assert.deepEqual(body, [catalog]);
             });
+    });
+
+    it('adds a comic to a catalog', () => {
+        assert.isOk(catalog._id);
     });
 });
