@@ -1,9 +1,8 @@
 const { assert } = require('chai');
 const User = require('../../lib/models/user');
 const { getErrors } = require('./helpers');
-const { Types } = require('mongoose');
 
-describe('User model', () => {
+describe.only('User model', () => {
 
     const data = {
         username: 'mja23',
@@ -35,9 +34,6 @@ describe('User model', () => {
             email: 'test@test.com',
             hash: 'abc123',
             zip: 97302,
-            comics: [Types.ObjectId(), Types.ObjectId()],
-            tradeable: [Types.ObjectId()],
-            wishlist: [Types.ObjectId()]
         };
         const user = new User(data);
 
@@ -49,13 +45,10 @@ describe('User model', () => {
 
     it('validates required fields', () => {
         const user = new User({});
-        const errors = getErrors(user.validateSync(), 5);
+        const errors = getErrors(user.validateSync(), 2);
 
-        assert.equal(errors.avatar.kind, 'required');
         assert.equal(errors.username.kind, 'required');
         assert.equal(errors.email.kind, 'required');
-        assert.equal(errors.hash.kind, 'required');
-        assert.equal(errors.zip.kind, 'required');
     });
 
 });
