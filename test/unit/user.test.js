@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const User = require('../../lib/models/user');
 const { getErrors } = require('./helpers');
 
-describe.only('User model', () => {
+describe('User model', () => {
 
     const data = {
         username: 'mja23',
