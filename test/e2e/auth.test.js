@@ -32,7 +32,6 @@ describe('Auth API', () => {
             .get('/api/auth/verify')
             .set('Authorization', token)
             .then(({ body }) => {
-                console.log('body', body);
                 assert.isOk(body.verified);
             });
     });
