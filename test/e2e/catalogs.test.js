@@ -68,6 +68,15 @@ describe.only('Catalog API', () => {
         assert.isOk(catalog._id);
     });
 
+    it('gets a catalog list', () => {
+        return request
+            .get('/api/catalogs')
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.deepEqual(body, [catalog]);
+            });
+    });
+
     it('updates a catalog item on PUT', () => {
         catalog.condition = 'good';
         return request
