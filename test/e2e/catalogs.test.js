@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./_db');
 const { getOneComicDetail } = require('../../lib/services/comicsApi');
 
-describe('Catalog API', () => {
+describe.only('Catalog API', () => {
 
     beforeEach(() => dropCollection('users'));
     beforeEach(() => dropCollection('comics'));
@@ -74,6 +74,15 @@ describe('Catalog API', () => {
             .set('Authorization', token)
             .then(({ body }) => {
                 assert.deepEqual(body, [catalog]);
+            });
+    });
+
+    it('it gets catalog items by userId', () => {
+        return request
+            .get(`/api/catalogs/${catalog.userId}`)
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.deepEqual(body[0].userId, catalog.userId);
             });
     });
 
