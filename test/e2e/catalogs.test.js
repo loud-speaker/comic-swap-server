@@ -67,4 +67,15 @@ describe.only('Catalog API', () => {
     it('adds a comic to a catalog', () => {
         assert.isOk(catalog._id);
     });
+
+    it('updates a catalog item on PUT', () => {
+        catalog.condition = 'good';
+        return request
+            .put(`/api/catalogs/${catalog._id}`)
+            .set('Authorization', token)
+            .send(catalog)
+            .then(({ body }) => {
+                assert.equal(body.condition, catalog.condition);
+            });
+    });
 });
