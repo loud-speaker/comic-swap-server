@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./_db');
 const { getOneComicDetail } = require('../../lib/services/comicsApi');
 
-describe.only('Catalog API', () => {
+describe('Catalog API', () => {
 
     beforeEach(() => dropCollection('users'));
     beforeEach(() => dropCollection('comics'));

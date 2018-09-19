@@ -1,17 +1,26 @@
 const { assert } = require('chai');
+const request = require('./request');
 const { getComicsList } = require('../../lib/services/comicsApi');
 
-describe('getComicsList API call', () => {
+describe.only('getComicsList API call', () => {
 
-    it('Should get comic list', () => {
-        return getComicsList()
+    it.only('Should get comic list', () => {
+        return request
+            .get('/api/comics/comic-search')
             .then(data => {
+                console.log(data);
                 assert.isDefined(data);
             });
     });
 
-    it('Returns comic list as processed data', () => {
-        return getComicsList(2)
+    it.only('Returns comic list as processed data', () => {
+        let params = {
+            limit: 3,
+            keyword: 'spiderman',
+        };
+
+        return request
+            .get('/api/comics/comic-search', {}, params)
             .then(data => {
                 assert.deepEqual(data[0].comicId, 6);
                 assert.deepEqual(data[1].comicId, 7);
