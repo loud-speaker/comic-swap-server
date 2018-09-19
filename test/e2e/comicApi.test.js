@@ -25,7 +25,6 @@ describe('getOneComicDetail API call', () => {
     it('Returns comic as processed data', () => {
         return getOneComicDetail(batmanEternal.comicId)
             .then(data => {
-                console.log('DATA', data);
                 assert.deepEqual(data.issueName, batmanEternal.issueName);
                 assert.deepEqual(data.volumeName, batmanEternal.volumeName);
                 assert.deepEqual(data.coverDate, batmanEternal.coverDate);
