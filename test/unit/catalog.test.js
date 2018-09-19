@@ -34,7 +34,7 @@ describe('Catalog model', () => {
         });
         const errors = getErrors(catalog.validateSync(), 1);
 
-        assert.equal(errors.condition.message, '`banana` is not a valid enum value for path `condition`.')
+        assert.equal(errors.condition.message, '`banana` is not a valid enum value for path `condition`.');
     });
 
 });
