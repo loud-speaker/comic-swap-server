@@ -3,18 +3,17 @@ const Catalog = require('../../lib/models/catalog');
 const { getErrors } = require('./helpers');
 const { Types } = require('mongoose');
 
-describe('Catalog model', () => {
+describe.only('Catalog model', () => {
 
     it('validates good model', () => {
         const data = {
-            userId: Types.ObjectId(),
-            comicId: [Types.ObjectId(), Types.ObjectId()],
-            condition: 'good'
+            user: Types.ObjectId(),
+            comic: Types.ObjectId(),
+            condition: 'Good'
         };
         const catalog = new Catalog(data);
         const json = catalog.toJSON();
         delete json._id;
-        json.comicId.forEach(c => delete c._id);
 
         assert.deepEqual(json, data);
         assert.isUndefined(catalog.validateSync());
@@ -22,14 +21,16 @@ describe('Catalog model', () => {
 
     it('validates required fields', () => {
         const catalog = new Catalog({});
-        const errors = getErrors(catalog.validateSync(), 1);
+        const errors = getErrors(catalog.validateSync(), 2);
 
-        assert.equal(errors.userId.kind, 'required');
+        assert.equal(errors.user.kind, 'required');
+        assert.equal(errors.comic.kind, 'required');
     });
 
     it('returns comic condition', () => {
         const catalog = new Catalog({
-            userId: Types.ObjectId(),
+            user: Types.ObjectId(),
+            comic: Types.ObjectId(),
             condition: 'banana'
         });
         const errors = getErrors(catalog.validateSync(), 1);

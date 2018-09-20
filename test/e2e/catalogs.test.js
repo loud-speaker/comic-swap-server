@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./_db');
 const { getOneComicDetail } = require('../../lib/services/comicsApi');
 
-describe('Catalog API', () => {
+describe.only('Catalog API', () => {
 
     beforeEach(() => dropCollection('users'));
     beforeEach(() => dropCollection('comics'));
@@ -32,6 +32,7 @@ describe('Catalog API', () => {
             .post('/api/auth/signup')
             .send(data)
             .then(({ body }) => {
+                console.log('***USER BODY***', body);
                 token = body.token;
                 mariah = body;
             });
@@ -44,6 +45,7 @@ describe('Catalog API', () => {
                     .post('/api/comics')
                     .send(data)
                     .then(({ body }) => {
+                        console.log('***COMIC BODY***', body);
                         comic = body;
                         assert.isOk(comic._id);
                     });
@@ -55,16 +57,18 @@ describe('Catalog API', () => {
             .post('/api/catalogs')
             .set('Authorization', token)
             .send({
-                userId: mariah._id,
-                comicId: comic._id,
+                user: mariah._id,
+                comic: comic._id,
                 condition: 'poor'
             })
             .then(({ body }) => {
+                console.log('BODY', body);
                 catalog = body;
             });
     });
 
-    it('adds a comic to a catalog', () => {
+    it.only('adds a comic to a catalog', () => {
+        console.log('CATALOG', catalog);
         assert.isOk(catalog._id);
     });
 
@@ -79,10 +83,19 @@ describe('Catalog API', () => {
 
     it('it gets catalog items by userId', () => {
         return request
-            .get(`/api/catalogs/${catalog.userId}`)
+            .get(`/api/catalogs/${catalog.user}`)
             .set('Authorization', token)
             .then(({ body }) => {
                 assert.deepEqual(body[0].userId, catalog.userId);
+            });
+    });
+
+    it('deletes a catalog item', () => {
+        return request
+            .del(`/api/catalogs/${catalog._id}`)
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.isTrue(body.removed);
             });
     });
 
