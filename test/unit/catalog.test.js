@@ -3,7 +3,7 @@ const Catalog = require('../../lib/models/catalog');
 const { getErrors } = require('./helpers');
 const { Types } = require('mongoose');
 
-describe.only('Catalog model', () => {
+describe('Catalog model', () => {
 
     it('validates good model', () => {
         const data = {

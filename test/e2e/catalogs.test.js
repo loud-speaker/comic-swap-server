@@ -1,7 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./_db');
-const { getOneComicDetail } = require('../../lib/services/comicsApi');
+const { Types } = require('mongoose');
 
 describe.only('Catalog API', () => {
 
@@ -18,13 +18,16 @@ describe.only('Catalog API', () => {
         password: 'abc123',
         zip: 97306
     };
+
     const batmanEternal = {
         comicId: 479928,
         issueName: 'Batman... Eternal?',
         volumeName: 'Batman Eternal',
-        coverDate: '2015-04-01'
+        coverDate: '2015-04-01',
+        description: 'I\'m Batman.',
+        image: 'url'
     };
-    let comic;
+
     let catalog;
 
     beforeEach(() => {
@@ -32,23 +35,9 @@ describe.only('Catalog API', () => {
             .post('/api/auth/signup')
             .send(data)
             .then(({ body }) => {
-                console.log('***USER BODY***', body);
                 token = body.token;
                 mariah = body;
-            });
-    });
-
-    beforeEach(() => {
-        return getOneComicDetail(batmanEternal.comicId)
-            .then(data => {
-                return request
-                    .post('/api/comics')
-                    .send(data)
-                    .then(({ body }) => {
-                        console.log('***COMIC BODY***', body);
-                        comic = body;
-                        assert.isOk(comic._id);
-                    });
+                batmanEternal.user = mariah;
             });
     });
 
@@ -58,17 +47,15 @@ describe.only('Catalog API', () => {
             .set('Authorization', token)
             .send({
                 user: mariah._id,
-                comic: comic._id,
-                condition: 'poor'
+                comic: Types.ObjectId(),
+                condition: 'Good'
             })
             .then(({ body }) => {
-                console.log('BODY', body);
                 catalog = body;
             });
     });
 
-    it.only('adds a comic to a catalog', () => {
-        console.log('CATALOG', catalog);
+    it('adds a comic to a catalog', () => {
         assert.isOk(catalog._id);
     });
 
@@ -86,7 +73,7 @@ describe.only('Catalog API', () => {
             .get(`/api/catalogs/${catalog.user}`)
             .set('Authorization', token)
             .then(({ body }) => {
-                assert.deepEqual(body[0].userId, catalog.userId);
+                assert.deepEqual(body[0].user, catalog.user);
             });
     });
 
@@ -100,7 +87,7 @@ describe.only('Catalog API', () => {
     });
 
     it('updates a catalog item on PUT', () => {
-        catalog.condition = 'good';
+        catalog.condition = 'Fine';
         return request
             .put(`/api/catalogs/${catalog._id}`)
             .set('Authorization', token)
@@ -109,4 +96,5 @@ describe.only('Catalog API', () => {
                 assert.equal(body.condition, catalog.condition);
             });
     });
+
 });
