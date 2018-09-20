@@ -1,7 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./_db');
-const { getOneComicDetail } = require('../../lib/services/comicsApi');
+const { Types } = require('mongoose');
 
 describe('Catalog API', () => {
 
@@ -18,13 +18,16 @@ describe('Catalog API', () => {
         password: 'abc123',
         zip: 97306
     };
+
     const batmanEternal = {
         comicId: 479928,
         issueName: 'Batman... Eternal?',
         volumeName: 'Batman Eternal',
-        coverDate: '2015-04-01'
+        coverDate: '2015-04-01',
+        description: 'I\'m Batman.',
+        image: 'url'
     };
-    let comic;
+
     let catalog;
 
     beforeEach(() => {
@@ -34,19 +37,7 @@ describe('Catalog API', () => {
             .then(({ body }) => {
                 token = body.token;
                 mariah = body;
-            });
-    });
-
-    beforeEach(() => {
-        return getOneComicDetail(batmanEternal.comicId)
-            .then(data => {
-                return request
-                    .post('/api/comics')
-                    .send(data)
-                    .then(({ body }) => {
-                        comic = body;
-                        assert.isOk(comic._id);
-                    });
+                batmanEternal.user = mariah;
             });
     });
 
@@ -55,9 +46,10 @@ describe('Catalog API', () => {
             .post('/api/catalogs')
             .set('Authorization', token)
             .send({
-                userId: mariah._id,
-                comicId: comic._id,
-                condition: 'poor'
+                user: mariah._id,
+                comic: Types.ObjectId(),
+                condition: 'Good',
+                exchange: 'Own'
             })
             .then(({ body }) => {
                 catalog = body;
@@ -79,15 +71,15 @@ describe('Catalog API', () => {
 
     it('it gets catalog items by userId', () => {
         return request
-            .get(`/api/catalogs/${catalog.userId}`)
+            .get(`/api/catalogs/${catalog.user}`)
             .set('Authorization', token)
             .then(({ body }) => {
-                assert.deepEqual(body[0].userId, catalog.userId);
+                assert.deepEqual(body[0].user, catalog.user);
             });
     });
 
     it('updates a catalog item on PUT', () => {
-        catalog.condition = 'good';
+        catalog.condition = 'Fine';
         return request
             .put(`/api/catalogs/${catalog._id}`)
             .set('Authorization', token)
@@ -96,4 +88,14 @@ describe('Catalog API', () => {
                 assert.equal(body.condition, catalog.condition);
             });
     });
+
+    it('deletes a catalog item', () => {
+        return request
+            .del(`/api/catalogs/${catalog._id}`)
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.isTrue(body.removed);
+            });
+    });
+
 });
