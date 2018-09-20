@@ -77,15 +77,6 @@ describe.only('Catalog API', () => {
             });
     });
 
-    it('deletes a catalog item', () => {
-        return request
-            .del(`/api/catalogs/${catalog._id}`)
-            .set('Authorization', token)
-            .then(({ body }) => {
-                assert.isTrue(body.removed);
-            });
-    });
-
     it('updates a catalog item on PUT', () => {
         catalog.condition = 'Fine';
         return request
@@ -94,6 +85,15 @@ describe.only('Catalog API', () => {
             .send(catalog)
             .then(({ body }) => {
                 assert.equal(body.condition, catalog.condition);
+            });
+    });
+
+    it('deletes a catalog item', () => {
+        return request
+            .del(`/api/catalogs/${catalog._id}`)
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.isTrue(body.removed);
             });
     });
 
