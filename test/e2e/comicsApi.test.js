@@ -2,18 +2,17 @@ const { assert } = require('chai');
 const request = require('./request');
 const { getComicsList } = require('../../lib/services/comicsApi');
 
-describe.only('getComicsList API call', () => {
+describe.skip('getComicsList API call', () => {
 
-    it.only('Should get comic list', () => {
+    it('Should get comic list', () => {
         return request
             .get('/api/comics/comic-search')
             .then(data => {
-                console.log(data);
                 assert.isDefined(data);
             });
     });
 
-    it.only('Returns comic list as processed data', () => {
+    it('Returns comic list as processed data', () => {
         let params = {
             limit: 3,
             keyword: 'spiderman',
