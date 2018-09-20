@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./_db');
 const { getOneComicDetail } = require('../../lib/services/comicsApi');
 
-describe('Catalog API', () => {
+describe.only('Catalog API', () => {
 
     beforeEach(() => dropCollection('users'));
     beforeEach(() => dropCollection('comics'));
@@ -82,6 +82,7 @@ describe('Catalog API', () => {
             .get(`/api/catalogs/${catalog.userId}`)
             .set('Authorization', token)
             .then(({ body }) => {
+                console.log('BODY', body);
                 assert.deepEqual(body[0].userId, catalog.userId);
             });
     });
