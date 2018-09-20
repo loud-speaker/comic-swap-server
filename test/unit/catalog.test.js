@@ -9,7 +9,8 @@ describe('Catalog model', () => {
         const data = {
             user: Types.ObjectId(),
             comic: Types.ObjectId(),
-            condition: 'Good'
+            condition: 'Good',
+            exchange: 'Own'
         };
         const catalog = new Catalog(data);
         const json = catalog.toJSON();

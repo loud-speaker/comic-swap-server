@@ -3,7 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./_db');
 const { Types } = require('mongoose');
 
-describe.only('Catalog API', () => {
+describe('Catalog API', () => {
 
     beforeEach(() => dropCollection('users'));
     beforeEach(() => dropCollection('comics'));
@@ -48,7 +48,8 @@ describe.only('Catalog API', () => {
             .send({
                 user: mariah._id,
                 comic: Types.ObjectId(),
-                condition: 'Good'
+                condition: 'Good',
+                exchange: 'Own'
             })
             .then(({ body }) => {
                 catalog = body;
